@@ -14,12 +14,11 @@ CREATE TABLE users (
 	name VARCHAR(20) NOT NULL,
 	surname VARCHAR(20) NOT NULL,
 	login VARCHAR(30) NOT NULL,
-	password VARCHAR(30) NOT NULL);
+	password VARCHAR(255) NOT NULL);
 	
 CREATE TABLE roles (
-	user_id BIGINT NOT NULL,
-	role_name VARCHAR(30) NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES users (id));
+	id BIGSERIAL PRIMARY KEY,
+	role_name VARCHAR(30) NOT NULL);
 	
 CREATE TABLE tag (
 	id BIGSERIAL PRIMARY KEY,
@@ -44,3 +43,9 @@ CREATE TABLE news_author (
 	author_id BIGINT NOT NULL,
 	FOREIGN KEY (news_id) REFERENCES news (id),
 	FOREIGN KEY (author_id) REFERENCES author (id));
+	
+CREATE TABLE user_role (
+	user_id BIGINT NOT NULL,
+	role_id BIGINT NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES users (id),
+	FOREIGN KEY (role_id) REFERENCES roles (id));
