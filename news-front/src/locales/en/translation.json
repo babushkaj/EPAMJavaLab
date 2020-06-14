@@ -1,0 +1,50 @@
+{
+	"add_news": "Add news",
+	"login": "Login",
+	"logout": "Logout",
+	"register": "Register",
+	"welcome_back": "Welcome back",
+	"EN": "EN",
+	"RU": "RU",
+
+	"add_news": "Add news",
+	"add_edit_tag": "Add/edit tag",
+	"add_edit_author": "Add/edit author",
+	
+	"authors_name": "Author's name",
+	"authors_surname": "Author's surname",
+	"edit": "Edit",
+	"delete": "Delete",
+	"read": "Read",
+	"search": "Search",
+	"clean": "Clean",
+	
+	"to_news_list": "To news list",
+	
+	"login_field": "Login",
+	"password": "Password",
+	
+	"new_author_name": "New author name",
+	"new_author_surname": "New author surname",
+	"add": "Add",
+	"save": "Save",
+	
+	"new_tag_name": "New tag name",
+	
+	"title": "Title",
+	"short_text": "Short text",
+	"full_text": "Full text",
+	"selected_tags": "This news tags",
+	"existing_tags": "All existing tags",
+	
+	"author": "Author",
+	
+	"tag_name_mustnt_be_empty": "The tag's name mustn't be empty",
+	"tag_name_mustnt_be_larger_than_30_characters": "The tag's name mustn't be longer than 30 characters",
+	"tag_already_exists": "The same tag already exists",
+	
+	"author_name_surname_mustnt_be_empty": "The author's name or surname mustn't be empty",
+	"author_name_surname_mustnt_be_larger_than_30_characters": "The author's name or surname mustn't be longer than 30 characters"
+
+
+}

@@ -1,0 +1,48 @@
+{
+	"add_news": "Добавить новость",
+	"login": "Вход",
+	"logout": "Выйти",
+	"register": "Регистрация",
+	"welcome_back": "С возвращением",
+	"EN": "Англ",
+	"RU": "Ру",
+
+	"add_news": "Добавить новость",
+	"add_edit_tag": "Добавить/изменть тег",
+	"add_edit_author": "Добавить/изменть автора",
+	
+	"authors_name": "Имя автора",
+	"authors_surname": "Фамилия автора",
+	"edit": "Изменить",
+	"delete": "Удалить",
+	"read": "Читать",
+	"search": "Поиск",
+	"clean": "Очистить",
+	
+	"to_news_list": "К списку новостей",
+	
+	"login_field": "Логин",
+	"password": "Пароль",
+	
+	"new_author_name": "Имя нового автора",
+	"new_author_surname": "Фамилия нового автора",
+	"add": "Добавить",
+	"save": "Сохранить",
+	
+	"new_tag_name": "Новый тег",
+	
+	"title": "Заголовок",
+	"short_text": "Краткое содержание",
+	"full_text": "Полный текст",
+	"selected_tags": "Теги для этой новости",
+	"existing_tags": "Все теги",
+	
+	"author": "Автор",
+	
+	"tag_name_mustnt_be_empty": "Имя тега не может быть пустым",
+	"tag_name_mustnt_be_larger_than_30_characters": "Имя тега не может содержать более 30 символов",
+	"tag_already_exists": "Такой тег уже существует",
+	
+	"author_name_surname_mustnt_be_empty": "Имя или фамилия автора не может быть пустой",
+	"author_name_surname_mustnt_be_larger_than_30_characters": "Имя или фамилия автора не может содержать более 30 символов"
+}

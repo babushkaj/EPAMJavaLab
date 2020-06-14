@@ -25,9 +25,7 @@ VALUES
 	('The seventeenth news', 'This is the short text of the seventeenth news', 'This is the very long full text of the seventeenth news', '2018-07-07', '2018-08-08'),
 	('The eighteenth news', 'This is the short text of the eighteenth news', 'This is the very long full text of the eighteenth news', '2018-08-08', '2018-09-09'),
 	('The nineteenth news', 'This is the short text of the nineteenth news', 'This is the very long full text of the nineteenth news', '2018-09-09', '2018-10-10'),
-	('The twentieth news', 'This is the short text of the twentieth news', 'This is the very long full text of the twentieth news', '2018-10-10', '2018-11-11'),
-	('The additional 1 for author 1', 'This is the short text of the additional 1 for author 1', 'This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes. This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes. This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes. This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes. This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes. This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes. This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes. This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes. This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes. This is the very long full text of the additional 1 for author 1 it contains more than 1000 charactes.', '2018-02-02', '2018-03-03'),
-	('The additional 2 for author 1', 'This is the short text of the additional 2 for author 1', 'This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters. This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters. This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters. This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters. This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters. This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters. This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters. This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters. This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters. This is the very long full text of the additional 2 for author 1 it contains more than 1000 characters.', '2018-03-03', '2018-04-04');
+	('The twentieth news', 'This is the short text of the twentieth news', 'This is the very long full text of the twentieth news', '2018-10-10', '2018-11-11');
 
 	
 INSERT INTO author(name, surname)
@@ -66,16 +64,14 @@ VALUES
 	(17, 17), (17, 18), (17, 19),
 	(18, 18), (18, 19), (18, 20),
 	(19, 19), (19, 20), (19, 1),
-	(20, 20), (20, 1), (20, 2),
-	(21, 1), (22, 1);
+	(20, 20), (20, 1), (20, 2);
 	
 INSERT INTO news_author(news_id, author_id)
 VALUES
 	(1, 1), (2, 2), (3, 3),	(4, 4),	(5, 5),	
 	(6, 6),	(7, 7),	(8, 8),	(9, 9),	(10, 10), 
 	(11, 11), (12, 12),	(13, 13), (14, 14),	(15, 15), 
-	(16, 16), (17, 17), (18, 18), (19, 19), (20, 20),
-	(21, 1), (22, 1);
+	(16, 16), (17, 17), (18, 18), (19, 19), (20, 20);
 	
 INSERT INTO roles(id, role_name)
 VALUES

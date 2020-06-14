@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "cc2316ad-f1d4-4272-8e80-885316683b80",
+		"name": "authorization",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "authorization",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get jwt tokens",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "react",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ReactApplication",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "One",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "First",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/news/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"news",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "react",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ReactApplication",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "WWW-Authenticate",
+						"value": "Basic realm=\"oauth2/client\"",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODU2MTM3MjUsInVzZXJfbmFtZSI6Ik9uZSIsImp0aSI6ImJmOWQyZTA2LWZkMmQtNDNlOC05NmU0LWI2MDdhY2FkN2ZhYSIsImNsaWVudF9pZCI6IlJlYWN0QXBwbGljYXRpb24iLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiYXRpIjoiNWNmNTFlZGQtMTA2Yy00MGEyLWExMWItNGMwZWM2NmRiYmQzIn0.jS7CqmFZnle8wp7awaMY9nx5zyhiNj6-kajT_ZmWR64",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/news/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"news",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get authors using OAuth2 token",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODU1NzIxMzgsInVzZXJfbmFtZSI6Ik9uZSIsImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwianRpIjoiZWViZTdmMWEtMjJkZC00MDExLTg5MTctODU3ZTI4ZDNlZTUwIiwiY2xpZW50X2lkIjoiUmVhY3RBcHBsaWNhdGlvbiIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdfQ.gvMn8n6u3vpgPyDPjxlaaokfr2ddxovgGox3T2dHlsA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/news/api/authors?pageNumber=0&howMany=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"news",
+						"api",
+						"authors"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "0"
+						},
+						{
+							"key": "howMany",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1. implicit get redirect to login form",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/news/oauth/authorize?response_type=token&client_id=ReactApplication&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fnews",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"news",
+						"oauth",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "response_type",
+							"value": "token"
+						},
+						{
+							"key": "client_id",
+							"value": "ReactApplication"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http%3A%2F%2Flocalhost%3A3000%2Fnews"
+						}
+					]
+				},
+				"description": "destination uri = \"/news/api/authors\""
+			},
+			"response": []
+		},
+		{
+			"name": "2. implicit get login form",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/news/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"news",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. implicit send login form with csrf",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "_csrf",
+							"value": "c084b943-4035-4db1-a332-af8fb833af14",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "One",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "First",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/news/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"news",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
