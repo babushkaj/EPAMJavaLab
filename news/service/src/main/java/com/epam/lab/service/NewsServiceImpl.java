@@ -3,11 +3,15 @@ package com.epam.lab.service;
 import com.epam.lab.dto.AuthorDTO;
 import com.epam.lab.dto.NewsDTO;
 import com.epam.lab.dto.TagDTO;
+import com.epam.lab.model.News;
 import com.epam.lab.model.Tag;
-import com.epam.lab.repository.AuthorDAO;
-import com.epam.lab.repository.NewsDAO;
-import com.epam.lab.repository.TagDAO;
-import com.epam.lab.specification.SearchSpecification;
+import com.epam.lab.repository.AuthorRepository;
+import com.epam.lab.repository.NewsRepository;
+import com.epam.lab.repository.TagRepository;
+import com.epam.lab.specification.NewsSortSpecification;
+import com.epam.lab.specification.NewsSpecificationBuilder;
+import com.epam.lab.specification.SearchCriteria;
+import com.epam.lab.specification.SortCriteria;
 import com.epam.lab.specification.SortSpecification;
 import com.epam.lab.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,167 +19,131 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class NewsServiceImpl implements NewsService {
 
-    private final NewsDAO newsDAO;
-    private final TagDAO tagDAO;
-    private final AuthorDAO authorDAO;
-    private final SpecificationBuilder specificationBuilder;
+    private final NewsRepository newsRepository;
+    private final AuthorRepository authorRepository;
+    private final TagRepository tagRepository;
+    private final MapperUtil mapperUtil;
 
     @Autowired
-    public NewsServiceImpl(NewsDAO newsDAO, TagDAO tagDAO, AuthorDAO authorDAO,
-                           SpecificationBuilder specificationBuilder) {
-        this.newsDAO = newsDAO;
-        this.tagDAO = tagDAO;
-        this.authorDAO = authorDAO;
-        this.specificationBuilder = specificationBuilder;
+    public NewsServiceImpl(NewsRepository newsRepository, AuthorRepository authorRepository,
+                           TagRepository tagRepository, MapperUtil mapperUtil) {
+        this.newsRepository = newsRepository;
+        this.authorRepository = authorRepository;
+        this.tagRepository = tagRepository;
+        this.mapperUtil = mapperUtil;
     }
 
     @Override
     public NewsDTO selectNews(long id) {
-        NewsDTO newsDTO = MapperUtil.fromNewsToNewsDTO(newsDAO.select(id));
-        setAuthorToNews(newsDTO);
-        setTagsToNews(newsDTO);
-        return newsDTO;
-    }
-
-    private void setAuthorToNews(NewsDTO newsDTO) {
-        AuthorDTO authorDTO = MapperUtil.fromAuthorToAuthorDTO(authorDAO.getAuthorByNewsId(newsDTO.getId()));
-        newsDTO.setAuthor(authorDTO);
-    }
-
-    private void setTagsToNews(NewsDTO newsDTO) {
-        Set<TagDTO> tags = getTagDTOForNews(newsDTO);
-        if (isTagsNotEmpty(tags)) {
-            for (TagDTO tag : tags) {
-                newsDTO.getTags().add(tag);
-            }
-        }
-    }
-
-    private Set<TagDTO> getTagDTOForNews(NewsDTO newsDTO) {
-        return tagDAO.getAllTagsByNewsId(newsDTO.getId()).stream()
-                .map(MapperUtil::fromTagToTagDTO)
-                .collect(Collectors.toSet());
-    }
-
-    private boolean isTagsNotEmpty(Set<TagDTO> tags) {
-        return !tags.isEmpty();
+        return mapperUtil.convertNewsToDTO(newsRepository.findById(id));
     }
 
     @Override
-    @Transactional
     public void deleteNews(long id) {
-        newsDAO.deleteRelationNewsToAuthor(id);
-        newsDAO.deleteRelationNewsToAllTags(id);
-        newsDAO.delete(id);
+        newsRepository.delete(id);
     }
 
     @Override
-    @Transactional
     public NewsDTO updateNews(NewsDTO newsDTO) {
-        AuthorDTO authorDTO = newsDTO.getAuthor();
-        authorDAO.update(MapperUtil.fromAuthorDTOToAuthor(authorDTO));
-        updateRelationNewsAuthor(newsDTO.getId(), authorDTO.getId());
+        saveAuthorIfNotExist(newsDTO.getAuthor());
 
-        newsDAO.deleteRelationNewsToAllTags(newsDTO.getId());
         Set<TagDTO> tags = newsDTO.getTags();
-        if (tags != null && isTagsNotEmpty(tags)) {
-            for (TagDTO tag : tags) {
-                saveOrUpdateTag(newsDTO.getId(), tag);
-            }
+        for (TagDTO t : tags) {
+            saveTagIfNotExist(t);
         }
+
         newsDTO.setModificationDate(LocalDate.now());
-        newsDAO.update(MapperUtil.fromNewsDTOToNews(newsDTO));
+        newsRepository.update(mapperUtil.convertNewsDTOToEntity(newsDTO));
         return selectNews(newsDTO.getId());
     }
 
-    private void updateRelationNewsAuthor(long newsId, long authorId) {
-        newsDAO.deleteRelationNewsToAuthor(newsId);
-        newsDAO.setRelationNewsToAuthor(newsId, authorId);
-    }
-
-    private void saveOrUpdateTag(long newsId, TagDTO tag) {
-        Optional<Tag> tagOptional = tagDAO.getTagByName(tag.getName());
-        if (tagOptional.isPresent()) {
-            newsDAO.setRelationNewsToTag(newsId, tagOptional.get().getId());
-        } else {
-            long tagId = tagDAO.insert(MapperUtil.fromTagDTOToTag(tag));
-            newsDAO.setRelationNewsToTag(newsId, tagId);
-        }
-    }
-
     @Override
-    @Transactional
     public NewsDTO addNews(NewsDTO newsDTO) {
+        saveAuthorIfNotExist(newsDTO.getAuthor());
+
+        Set<TagDTO> tags = newsDTO.getTags();
+        for (TagDTO t : tags) {
+            saveTagIfNotExist(t);
+        }
+
         newsDTO.setCreationDate(LocalDate.now());
         newsDTO.setModificationDate(newsDTO.getCreationDate());
-        long newsId = newsDAO.insert(MapperUtil.fromNewsDTOToNews(newsDTO));
-
-        AuthorDTO authorDTO = newsDTO.getAuthor();
-        Long authorId = authorDTO.getId();
-        if (authorId == null) {
-            authorId = authorDAO.insert(MapperUtil.fromAuthorDTOToAuthor(authorDTO));
-            authorDTO.setId(authorId);
-        }
-        addRelationNewsAuthor(newsId, authorId);
-
-        Set<TagDTO> tagDTOs = newsDTO.getTags();
-        if (tagDTOs != null && !tagDTOs.isEmpty()) {
-            for (TagDTO tag : tagDTOs) {
-                saveOrUpdateTag(newsId, tag);
-            }
-        }
-
-        return selectNews(newsId);
+        long newsId = newsRepository.insert(mapperUtil.convertNewsDTOToEntity(newsDTO));
+        newsDTO.setId(newsId);
+        return newsDTO;
     }
 
-    private void addRelationNewsAuthor(long newsId, long authorId) {
-        newsDAO.setRelationNewsToAuthor(newsId, authorId);
+    private void saveAuthorIfNotExist(AuthorDTO author) {
+        if (author.getId() == null) {
+            long authorId = authorRepository.insert(mapperUtil.convertAuthorDTOToEntity(author));
+            author.setId(authorId);
+        }
+    }
+
+    private void saveTagIfNotExist(TagDTO t) {
+        Tag tag = tagRepository.findByName(t.getName());
+        if (tag == null) {
+            long tagId = tagRepository.insert(mapperUtil.convertTagDTOToEntity(t));
+            t.setId(tagId);
+        } else {
+            t.setId(tag.getId());
+        }
     }
 
     @Override
-    public List<NewsDTO> findNews(List<SearchCriteria> searchCriteria, List<SortCriteria> sortCriteria) {
-
-        List<SearchSpecification> searchSpecifications = specificationBuilder.buildSearchSpecifications(searchCriteria);
-        List<SortSpecification> sortSpecifications = specificationBuilder.buildSortSpecifications(sortCriteria);
-        List<NewsDTO> newsList = getNewsDTOBySpecifications(searchSpecifications, sortSpecifications);
-        List<NewsDTO> uniqueNews = chooseUniqueNews(newsList);
-
-        for (NewsDTO news : uniqueNews) {
-            setAuthorToNews(news);
-            setTagsToNews(news);
+    public List<NewsDTO> findNews(List<SearchCriteria> searchCriteria, List<SortCriteria> sortCriteria, int from, int howMany) {
+        if (searchCriteria.isEmpty()) {
+            return getAllNews(from, howMany);
         }
 
-        return uniqueNews;
-    }
-
-    private List<NewsDTO> getNewsDTOBySpecifications(List<SearchSpecification> searchSpecifications,
-                                                     List<SortSpecification> sortSpecifications) {
-        return newsDAO.find(searchSpecifications, sortSpecifications).stream().
-                map(MapperUtil::fromNewsToNewsDTO).
-                collect(Collectors.toList());
-    }
-
-    private List<NewsDTO> chooseUniqueNews(List<NewsDTO> newsList) {
-        List<NewsDTO> uniqueNews = new ArrayList<>();
-        Set<Long> newsId = new HashSet<>();
-        for (NewsDTO news : newsList) {
-            long id = news.getId();
-            if (!newsId.contains(id)) {
-                uniqueNews.add(news);
-                newsId.add(id);
+        NewsSpecificationBuilder newsSpecificationBuilder = new NewsSpecificationBuilder();
+        for (SearchCriteria sc : searchCriteria) {
+            newsSpecificationBuilder.with(sc);
+        }
+        List<SortSpecification<News>> sortSpecifications = new ArrayList<>();
+        if (sortCriteriaNotEmpty(sortCriteria)) {
+            for (SortCriteria sc : sortCriteria) {
+                sortSpecifications.add(new NewsSortSpecification(sc));
             }
         }
-        return uniqueNews;
+
+        return newsRepository.find(newsSpecificationBuilder.build(), sortSpecifications, from, howMany)
+                .stream()
+                .map(mapperUtil::convertNewsToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private List<NewsDTO> getAllNews(int from, int howMany) {
+        return newsRepository.findAll(from, howMany)
+                .stream()
+                .map(mapperUtil::convertNewsToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private boolean sortCriteriaNotEmpty(List<SortCriteria> sortCriteria) {
+        return !sortCriteria.isEmpty();
     }
 
     @Override
-    public Long getNewsCount() {
-        return newsDAO.getNewsCount();
+    public Long count(List<SearchCriteria> searchCriteria) {
+        if(searchCriteria.isEmpty())
+        return newsRepository.countAll();
+        else {
+            NewsSpecificationBuilder newsSpecificationBuilder = new NewsSpecificationBuilder();
+            for (SearchCriteria sc : searchCriteria) {
+                newsSpecificationBuilder.with(sc);
+            }
+            return newsRepository.countWithSpecification(newsSpecificationBuilder.build());
+        }
     }
+
 }

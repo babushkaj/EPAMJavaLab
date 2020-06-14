@@ -1,68 +1,77 @@
 package com.epam.lab.service;
 
+
 import com.epam.lab.dto.TagDTO;
 import com.epam.lab.model.Tag;
-import com.epam.lab.repository.TagDAO;
+import com.epam.lab.repository.TagRepository;
 import com.epam.lab.util.MapperUtil;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 
-import java.util.Optional;
+import static org.mockito.Mockito.*;
 
 @RunWith(JUnit4.class)
 public class TagServiceImplTest {
 
     private static final long TAG_ID = 1L;
     private static final String TAG_NAME = "Tag1";
+    private static final String NEW_TAG_NAME = "NewTag";
 
-    private static TagDAO mockTagDAO;
-    private static Tag tag1;
-    private static TagDTO tagDTO1;
-    private static TagService tagService;
+    private TagRepository mockTagDAO;
+    private Tag tag1;
+    private Tag newTag;
+    private TagDTO tagDTO1;
+    private TagDTO newTagDTO1;
+    private TagService tagService;
 
-    @BeforeClass
-    public static void setUp() {
-        mockTagDAO = Mockito.mock(TagDAO.class);
-        tag1 = new Tag(TAG_ID, TAG_NAME);
-        tagDTO1 = MapperUtil.fromTagToTagDTO(tag1);
-        Mockito.when(mockTagDAO.select(Mockito.anyLong())).thenReturn(tag1);
-        Mockito.when(mockTagDAO.getTagByName(TAG_NAME)).thenReturn(Optional.empty());
+    @Before
+    public void setUp() {
+        MapperUtil mapperUtil = new MapperUtil(new ModelMapper());
+        mockTagDAO = mock(TagRepository.class);
+        tag1 = new Tag();
+        tag1.setId(TAG_ID);
+        tag1.setName(TAG_NAME);
+        newTag = new Tag(NEW_TAG_NAME);
+        tagDTO1 = mapperUtil.convertTagToDTO(tag1);
+        newTagDTO1 = mapperUtil.convertTagToDTO(newTag);
+        when(mockTagDAO.findById(anyLong())).thenReturn(tag1);
+        when(mockTagDAO.findByName(any())).thenReturn(null);
 
-        tagService = new TagServiceImpl(mockTagDAO);
+        tagService = new TagServiceImpl(mockTagDAO, mapperUtil);
     }
 
     @Test
-    public void shouldCallSelectMethodInDAO() {
+    public void shouldCallFindByIdMethodInTagRepository() {
         tagService.selectTag(1L);
-        Mockito.verify(mockTagDAO, Mockito.times(1)).select(1L);
+        verify(mockTagDAO, times(1)).findById(1L);
     }
 
     @Test
-    public void shouldCallSelectAllMethodInDAO() {
-        tagService.selectAllTags();
-        Mockito.verify(mockTagDAO, Mockito.times(1)).selectAll();
+    public void shouldCallFindAllMethodInTagRepository() {
+        tagService.selectTags(0, 20);
+        verify(mockTagDAO, times(1)).findAll(0, 20);
     }
 
     @Test
-    public void shouldCallInsertMethodInDAO() {
-        tagService.addTag(tagDTO1);
-        Mockito.verify(mockTagDAO, Mockito.times(1)).insert(Mockito.anyObject());
+    public void shouldCallInsertMethodInTagRepository() {
+        tagService.addTag(newTagDTO1);
+        verify(mockTagDAO, times(1)).insert(anyObject());
     }
 
     @Test
-    public void shouldCallDeleteMethodInDAO() {
+    public void shouldCallDeleteMethodInTagRepository() {
         tagService.deleteTag(1L);
-        Mockito.verify(mockTagDAO, Mockito.times(1)).delete(1L);
+        verify(mockTagDAO, times(1)).delete(1L);
     }
 
     @Test
-    public void shouldCallUpdateMethodInDAO() {
+    public void shouldCallUpdateMethodInTagRepository() {
         tagService.updateTag(tagDTO1);
-        Mockito.verify(mockTagDAO, Mockito.times(1)).update(tag1);
+        verify(mockTagDAO, times(1)).update(tag1);
     }
-
 
 }

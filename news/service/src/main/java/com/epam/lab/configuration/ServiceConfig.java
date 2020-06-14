@@ -1,14 +1,15 @@
 package com.epam.lab.configuration;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@Import(RepositoryConfig.class)
 @Configuration
 @ComponentScan("com.epam.lab")
-@EnableTransactionManagement
 public class ServiceConfig {
-
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 }
