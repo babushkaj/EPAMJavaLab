@@ -1,8 +1,7 @@
 package com.epam.lab.service;
 
 import com.epam.lab.dto.AuthorDTO;
-import com.epam.lab.repository.AuthorDAO;
-import com.epam.lab.repository.NewsDAO;
+import com.epam.lab.repository.AuthorRepository;
 import com.epam.lab.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,52 +10,45 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
+@Transactional
 public class AuthorServiceImpl implements AuthorService {
 
-    private final AuthorDAO authorDAO;
-    private final NewsDAO newsDAO;
+    private final AuthorRepository authorRepository;
+    private final MapperUtil mapperUtil;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDAO authorDAO, NewsDAO newsDAO) {
-        this.authorDAO = authorDAO;
-        this.newsDAO = newsDAO;
+    public AuthorServiceImpl(AuthorRepository authorRepository, MapperUtil mapperUtil) {
+        this.authorRepository = authorRepository;
+        this.mapperUtil = mapperUtil;
     }
 
     @Override
     public AuthorDTO selectAuthor(long id) {
-        return MapperUtil.fromAuthorToAuthorDTO(authorDAO.select(id));
+        return mapperUtil.convertAuthorToDTO(authorRepository.findById(id));
     }
 
     @Override
     public List<AuthorDTO> selectAllAuthors() {
-        return authorDAO.selectAll().stream().map(MapperUtil::fromAuthorToAuthorDTO).collect(Collectors.toList());
+        return authorRepository.findAll().stream().map(mapperUtil::convertAuthorToDTO).collect(Collectors.toList());
     }
 
     @Override
-    @Transactional
     public void deleteAuthor(long id) {
-        List<Long> allAuthorNewsId = authorDAO.getAllNewsIdForAuthor(id);
-        authorDAO.deleteRelationAuthorToNews(id);
-        for (Long newsId : allAuthorNewsId) {
-            newsDAO.deleteRelationNewsToAllTags(newsId);
-            newsDAO.delete(newsId);
-        }
-        authorDAO.delete(id);
+        authorRepository.delete(id);
     }
 
     @Override
-    @Transactional
     public AuthorDTO updateAuthor(AuthorDTO authorDTO) {
-        authorDAO.update(MapperUtil.fromAuthorDTOToAuthor(authorDTO));
+        authorRepository.update(mapperUtil.convertAuthorDTOToEntity(authorDTO));
         return selectAuthor(authorDTO.getId());
     }
 
     @Override
-    @Transactional
     public AuthorDTO addAuthor(AuthorDTO authorDTO) {
-        long authorId = authorDAO.insert(MapperUtil.fromAuthorDTOToAuthor(authorDTO));
-        return MapperUtil.fromAuthorToAuthorDTO(authorDAO.select(authorId));
+        long authorId = authorRepository.insert(mapperUtil.convertAuthorDTOToEntity(authorDTO));
+        return mapperUtil.convertAuthorToDTO(authorRepository.findById(authorId));
     }
 
 }

@@ -2,39 +2,43 @@ package com.epam.lab.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 public class NewsDTO implements Serializable {
-    private long serialVersionUID = 1L;
+    static long serialVersionUID = 1L;
 
+    @Null(groups = {Saving.class})
+    @NotNull(groups = {Updating.class})
     private Long id;
-    @NotNull
-    @Size(min = 1, max = 30, message = "Title must be between 1 and 30 characters")
+    @NotBlank(groups = {Saving.class, Updating.class})
+    @Size(max = 30, message = "Title must be between 1 and 30 characters",
+            groups = {Saving.class, Updating.class})
     private String title;
-    @NotNull
-    @Size(min = 10, max = 200, message = "Short text must be between 10 and 200 characters")
+    @NotBlank(groups = {Saving.class, Updating.class})
+    @Size(max = 200, message = "Short text must be between 10 and 200 characters",
+            groups = {Saving.class, Updating.class})
     private String shortText;
-    @NotNull
-    @Size(min = 20, max = 2000, message = "Full text must be between 20 and 2000 characters")
+    @NotBlank(groups = {Saving.class, Updating.class})
+    @Size(max = 2000, message = "Full text must be between 20 and 2000 characters",
+            groups = {Saving.class, Updating.class})
     private String fullText;
-
+    @NotNull(groups = {Updating.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate modificationDate;
 
-    @NotNull(message = "Author cannot be null!")
+    @NotNull(message = "Author cannot be null!",
+            groups = {Saving.class, Updating.class})
     private AuthorDTO author;
-    private Set<TagDTO> tags = new HashSet<>();
-
-    public NewsDTO() {
-    }
+    private Set<TagDTO> tags;
 
     public Long getId() {
         return id;

@@ -6,16 +6,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.text.SimpleDateFormat;
 
-@Import(ServiceConfig.class)
 @Configuration
-@ComponentScan("com.epam.lab")
+@ComponentScan({"com.epam.lab.controller"})
 @EnableWebMvc
 public class ControllerConfig {
 
@@ -38,5 +37,10 @@ public class ControllerConfig {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
         builder.indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         return builder;
+    }
+
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
     }
 }

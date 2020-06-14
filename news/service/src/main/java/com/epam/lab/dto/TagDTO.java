@@ -1,20 +1,22 @@
 package com.epam.lab.dto;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class TagDTO implements Serializable {
-    private long serialVersionUID = 1L;
+    static final long serialVersionUID = 1L;
 
+    @Null(groups = {Saving.class})
+    @NotNull(groups = {Updating.class})
     private Long id;
-    @NotNull
-    @Size(min = 1, max = 30, message = "Name must be between 1 and 30 characters")
+    @NotBlank(groups = {Saving.class, Updating.class})
+    @Size(max = 30, message = "Name must be between 1 and 30 characters",
+            groups = {Saving.class, Updating.class})
     private String name;
-
-    public TagDTO() {
-    }
 
     public Long getId() {
         return id;

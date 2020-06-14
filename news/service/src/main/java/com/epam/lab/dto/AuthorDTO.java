@@ -1,23 +1,25 @@
 package com.epam.lab.dto;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class AuthorDTO implements Serializable {
-    private long serialVersionUID = 1L;
+    static final long serialVersionUID = 1L;
 
+    @Null(groups = {Saving.class})
+    @NotNull(groups = {Updating.class})
     private Long id;
-    @NotNull
-    @Size(min = 1, max = 30, message = "Name must be between 1 and 30 characters")
+    @NotNull(groups = {Saving.class, Updating.class})
+    @Size(min = 1, max = 30, message = "Name must be between 1 and 30 characters",
+            groups = {Saving.class, Updating.class})
     private String name;
-    @NotNull
-    @Size(min = 1, max = 30, message = "Surname must be between 1 and 30 characters")
+    @NotNull(groups = {Saving.class, Updating.class})
+    @Size(min = 1, max = 30, message = "Surname must be between 1 and 30 characters",
+            groups = {Saving.class, Updating.class})
     private String surname;
-
-    public AuthorDTO() {
-    }
 
     public Long getId() {
         return id;
