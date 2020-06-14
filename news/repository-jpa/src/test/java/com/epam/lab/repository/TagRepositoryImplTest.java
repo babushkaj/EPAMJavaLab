@@ -4,7 +4,6 @@ import com.epam.lab.configuration.RepositoryConfig;
 import com.epam.lab.exception.TagNotFoundException;
 import com.epam.lab.model.Tag;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +75,7 @@ public class TagRepositoryImplTest {
     @Test
     public void shouldDeleteTag() {
         tagRepository.delete(TAG_ID);
-        List<Tag> tags = tagRepository.findAll(0,20);
+        List<Tag> tags = tagRepository.findAll(0, 20);
         Assert.assertEquals(19, tags.size());
     }
 

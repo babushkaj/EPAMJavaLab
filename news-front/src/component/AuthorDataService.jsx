@@ -3,8 +3,8 @@ import React from 'react';
 import axios from 'axios'
 
 const AUTHORS_URL = 'authors'
-const ROOT_API_URL = 'http://localhost:8080'
-const AUTHORS_API_URL = `${ROOT_API_URL}/news/${AUTHORS_URL}`
+const ROOT_API_URL = 'http://localhost:8080/news'
+const AUTHORS_API_URL = `${ROOT_API_URL}/api/${AUTHORS_URL}`
 
 class AuthorDataService extends React.Component{
 

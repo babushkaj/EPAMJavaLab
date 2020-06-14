@@ -25,15 +25,16 @@ public class MapperUtil {
         this.modelMapper = modelMapper;
     }
 
-    public UserDTO convertUserToUserDTO(User user){
-        if(user == null)
+    public UserDTO convertUserToUserDTO(User user) {
+        if (user == null)
             return null;
-        else
+        else {
             return modelMapper.map(user, UserDTO.class);
+        }
     }
 
-    public User convertUserDTOToUser(UserDTO userDTO){
-        if(userDTO == null)
+    public User convertUserDTOToUser(UserDTO userDTO) {
+        if (userDTO == null)
             return null;
         else
             return modelMapper.map(userDTO, User.class);

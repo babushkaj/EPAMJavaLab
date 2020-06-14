@@ -25,7 +25,7 @@ import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tags")
+@RequestMapping("/api/tags")
 @Validated
 @CrossOrigin(origins = {"http://localhost:3000", "http://epbyminw8147.minsk.epam.com:3000"},
         exposedHeaders = {"tags-amount", "page-number"})
@@ -53,12 +53,12 @@ public class TagController {
         int from = pageNumber * howMany;
         long totalNumber = tagService.count();
         if (from >= totalNumber) {
-            if(totalNumber%howMany == 0){
-                from = (int)(totalNumber - howMany);
-                pageNumber = (int)totalNumber/howMany - 1;
+            if (totalNumber % howMany == 0) {
+                from = (int) (totalNumber - howMany);
+                pageNumber = (int) totalNumber / howMany - 1;
             } else {
                 from = (int) (totalNumber - (totalNumber % howMany));
-                pageNumber = (int)totalNumber/howMany;
+                pageNumber = (int) totalNumber / howMany;
             }
         }
 

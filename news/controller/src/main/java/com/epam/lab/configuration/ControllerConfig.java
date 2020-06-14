@@ -12,6 +12,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
 
 @Configuration
 @ComponentScan({"com.epam.lab.controller"})

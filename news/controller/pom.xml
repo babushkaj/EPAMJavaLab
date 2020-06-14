@@ -19,6 +19,7 @@
     <properties>
         <servlet.version>3.1.0</servlet.version>
         <jackson.version>2.10.0</jackson.version>
+        <oauth.version>2.2.4.RELEASE</oauth.version>
     </properties>
 
     <build>
@@ -62,6 +63,18 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+            <version>${oauth.version}</version>
         </dependency>
 
     </dependencies>

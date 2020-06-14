@@ -130,7 +130,7 @@ public class NewsServiceImplTest {
         SortCriteria authorNameSortCriteria = new SortCriteria("author_name", OrderValue.ASC);
         sortCriteria.add(authorNameSortCriteria);
         newsService.findNews(searchCriteria, sortCriteria, 0, 20);
-        verify(mockNewsRepository, times(1)).find(any(), anyList(), eq(0),  eq(20));
+        verify(mockNewsRepository, times(1)).find(any(), anyList(), eq(0), eq(20));
     }
 
 }

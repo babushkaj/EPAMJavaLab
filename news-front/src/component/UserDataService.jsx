@@ -3,8 +3,8 @@ import React from 'react';
 import axios from 'axios'
 
 const USERS_URL = 'users'
-const ROOT_API_URL = 'http://localhost:8080'
-const USERS_API_URL = `${ROOT_API_URL}/news/${USERS_URL}`
+const ROOT_API_URL = 'http://localhost:8080/news/api'
+const USERS_API_URL = `${ROOT_API_URL}/${USERS_URL}`
 
 class UserDataService extends React.Component{
 

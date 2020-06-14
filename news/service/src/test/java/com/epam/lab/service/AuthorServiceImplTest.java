@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 
 import static org.mockito.Mockito.*;
@@ -47,7 +46,7 @@ public class AuthorServiceImplTest {
 
     @Test
     public void shouldCallFindAllMethodInAuthorRepository() {
-        authorService.selectAuthors(0,20);
+        authorService.selectAuthors(0, 20);
         verify(mockAuthorDAO, times(1)).findAll(0, 20);
     }
 

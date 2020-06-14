@@ -1,5 +1,7 @@
 package com.epam.lab.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
@@ -29,6 +31,7 @@ public class UserDTO {
     @NotNull(groups = {Saving.class, Updating.class})
     @Size(min = 1, max = 30, message = "Password must be between 1 and 30 characters",
             groups = {Saving.class, Updating.class})
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public Long getId() {

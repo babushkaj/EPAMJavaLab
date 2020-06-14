@@ -11,9 +11,16 @@ Sonarqube: http://EPBYMINW8147.minsk.epam.com:9000/dashboard?id=com.epam.lab%3An
 ***RestAPI***
 
 **Author**
-*	***GET:*** */authors - Gets all authors*;
-*	***GET:*** */authors/id - Gets author by id*;
-*	***POST:*** */authors - Persists author. Author should be sent using request-body in appropriate JSON-format*:
+*	***GET:*** */api/authors?pageNumber=...&howMany=... - Gets authors (pagination support)*;
+
+	
+	Parameters:
+	
+		- pageNumber - which page of result you want to see (numeration stars from 0);
+		- howMany - now many rows ypu want to see on the page.
+		
+*	***GET:*** */api/authors/id - Gets author by id*;
+*	***POST:*** */api/authors - Persists author. Author should be sent using request-body in appropriate JSON-format*:
 
     {
         "name": "NewAuthorName",
@@ -28,31 +35,41 @@ Sonarqube: http://EPBYMINW8147.minsk.epam.com:9000/dashboard?id=com.epam.lab%3An
         "surname": "AuthorSurname"
     }
 
-*	***DELETE:*** */authors/id - Delete author by id*.
+*	***DELETE:*** */api/authors/id - Delete author by id*.
 
 **Tag**
-*	***GET:*** */tags - Gets all tags*;
-*	***GET:*** */tags/id - Gets tag by id*;
-*	***POST:*** */tags - Persists tag. Tag should be sent using request-body in appropriate JSON-format*:
+*	***GET:*** */api/tags?pageNumber=...&howMany=... - Gets all tags (pagination support)*;
+
+	
+	Parameters:
+	
+		- pageNumber - which page of result you want to see (numeration stars from 0);
+		- howMany - now many rows ypu want to see on the page.
+		
+*	***GET:*** */api/tags/id - Gets tag by id*;
+*	***POST:*** */api/tags - Persists tag. Tag should be sent using request-body in appropriate JSON-format*:
 
     {
         "name": "TagName"
     }
 
-*	***PUT:*** */tags - Merge tag. Tag should be sent using request-body in appropriate JSON-format*:
+*	***PUT:*** */api/tags - Merge tag. Tag should be sent using request-body in appropriate JSON-format*:
 
     {
     	"id": 20,
         "name": "TagName"
     }
 
-*	***DELETE:*** */tags/id - Delete tag by id*.
+*	***DELETE:*** */api/tags/id - Delete tag by id*.
 
 **News**
-*	***GET:*** */news - Gets all news*;
-*	***GET:*** */news/id - Gets news by id*;
-*	***GET:*** */news?search=...&sort=... - Gets news according to search and sort conditions*. 
-    
+*	***GET:*** */api/news?pageNumber=...&howMany=...&search=...&sort=... - Gets news according to search and sort conditions (pagination support)*. 
+
+	
+	Parameters:
+	
+		- pageNumber - which page of result you want to see (numeration stars from 0);
+		- howMany - now many rows ypu want to see on the page.    
 
     Common search criteria format: criteria_name:value
     
@@ -74,9 +91,12 @@ Sonarqube: http://EPBYMINW8147.minsk.epam.com:9000/dashboard?id=com.epam.lab%3An
         Available order:
         - asc - ascending;
         - desc - descending.
+		
+	Search and sort criteries are not required.
 
-*	***GET:*** */news/count - Gets news quantity*;
-*	***POST:*** */news - Persists news. News should be sent using request-body in appropriate JSON-format*:
+*	***GET:*** */api/news/id - Gets news by id*;
+*	***GET:*** */api/news/count - Gets news quantity*;
+*	***POST:*** */api/news - Persists news. News should be sent using request-body in appropriate JSON-format*:
 
     {
         "title": "Title of this news",
@@ -98,7 +118,7 @@ Sonarqube: http://EPBYMINW8147.minsk.epam.com:9000/dashboard?id=com.epam.lab%3An
                 ]
     }
 
-*	***PUT:*** */news - Merge news. News should be sent using request-body in appropriate JSON-format*:
+*	***PUT:*** */api/news - Merge news. News should be sent using request-body in appropriate JSON-format*:
 
     {
 	    "id": 5,
@@ -123,4 +143,4 @@ Sonarqube: http://EPBYMINW8147.minsk.epam.com:9000/dashboard?id=com.epam.lab%3An
                 ]
     }
 
-*	***DELETE:*** */news/id - Delete news by id*.
+*	***DELETE:*** */api/news/id - Delete news by id*.

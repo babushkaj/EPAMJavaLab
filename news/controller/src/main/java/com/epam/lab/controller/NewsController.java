@@ -31,10 +31,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/news")
+@RequestMapping("/api/news")
 @Validated
 @CrossOrigin(origins = {"http://localhost:3000", "http://epbyminw8147.minsk.epam.com:3000"},
-            exposedHeaders = {"news-amount", "page-number", "search-string"})
+        exposedHeaders = {"news-amount", "page-number", "search-string"})
 public class NewsController {
 
     private static final String PARSE_SEARCH_CRITERIA_REGEX = "(\\w+?)(:)(\\w+?)(,+?)";

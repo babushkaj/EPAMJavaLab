@@ -2,7 +2,6 @@ package com.epam.lab.repository;
 
 import com.epam.lab.configuration.RepositoryConfig;
 import com.epam.lab.exception.UserNotFoundException;
-import com.epam.lab.model.Author;
 import com.epam.lab.model.User;
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,14 +61,13 @@ public class UserRepositoryImplTest {
 
     @Test
     public void shouldSelectAllUsers() {
-        List<User> users = userRepository.findAll(0,3);
+        List<User> users = userRepository.findAll(0, 3);
         Assert.assertEquals(3, users.size());
     }
 
     @Test
     public void shouldUpdateUser() {
         User user = new User();
-        Author author = new Author();
         user.setId(USER_ID);
         user.setName(UPDATED_USER_NAME);
         user.setSurname(UPDATED_USER_NAME);
@@ -95,21 +93,27 @@ public class UserRepositoryImplTest {
     @Test
     public void shouldDeleteAuthor() {
         userRepository.delete(USER_ID);
-        List<User> users = userRepository.findAll(0,3);
+        List<User> users = userRepository.findAll(0, 3);
         Assert.assertEquals(2, users.size());
     }
 
     @Test
-    public void shouldFindUserByLogin(){
+    public void shouldFindUserByLogin() {
         User user = userRepository.findByLogin(USER_LOGIN);
         long userId = user.getId();
         Assert.assertEquals(USER_ID, userId);
     }
 
     @Test
-    public void shouldReturnNullWhenFindUserByLogin(){
+    public void shouldReturnNullWhenFindUserByLogin() {
         User user = userRepository.findByLogin(UPDATED_USER_NAME);
         Assert.assertNull(user);
+    }
+
+    @Test
+    public void shouldCountUsers() {
+        long count = userRepository.countAll();
+        Assert.assertEquals(3, count);
     }
 
 }

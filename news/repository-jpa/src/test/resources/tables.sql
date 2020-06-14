@@ -9,13 +9,12 @@ CREATE TABLE users (
   name     VARCHAR(20) NOT NULL,
   surname  VARCHAR(20) NOT NULL,
   login    VARCHAR(30) NOT NULL,
-  password VARCHAR(30) NOT NULL
+  password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE roles (
-  user_id   BIGINT      NOT NULL,
-  role_name VARCHAR(30) NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users (id)
+  id   BIGINT IDENTITY PRIMARY KEY,
+  role_name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE tag (
@@ -55,3 +54,12 @@ CREATE TABLE news_tag
 
 );
 
+CREATE TABLE user_role (
+	user_id BIGINT NOT NULL,
+	role_id BIGINT NOT NULL,
+	primary key (user_id, role_id),
+    constraint fk_user_role_user_id
+    foreign key (user_id) references users (id),
+    constraint fk_user_role_role_id
+    foreign key (role_id) references roles (id)
+);

@@ -15,5 +15,7 @@ public interface UserService {
 
     UserDTO addUser(UserDTO user);
 
-    UserDTO selectUserByLogin(String login);
+    Long count();
+//
+//    UserDTO selectUserByLogin(String login);
 }

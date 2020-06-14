@@ -4,8 +4,8 @@ import axios from 'axios'
 // import $ from "jquery"
 
 const TAGS_URL = 'tags'
-const ROOT_API_URL = 'http://localhost:8080'
-const TAGS_API_URL = `${ROOT_API_URL}/news/${TAGS_URL}`
+const ROOT_API_URL = 'http://localhost:8080/news'
+const TAGS_API_URL = `${ROOT_API_URL}/api/${TAGS_URL}`
 
 class TagDataService extends React.Component{
 

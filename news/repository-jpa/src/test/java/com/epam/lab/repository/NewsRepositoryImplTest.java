@@ -79,7 +79,7 @@ public class NewsRepositoryImplTest {
     @Test
     public void shouldDeleteNews() {
         newsRepository.delete(NEWS_ID);
-        List<News> news = newsRepository.findAll(0,20);
+        List<News> news = newsRepository.findAll(0, 20);
         Assert.assertEquals(19, news.size());
     }
 

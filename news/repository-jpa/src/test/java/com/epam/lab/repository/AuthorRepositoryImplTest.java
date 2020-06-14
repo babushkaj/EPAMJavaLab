@@ -54,7 +54,7 @@ public class AuthorRepositoryImplTest {
 
     @Test
     public void shouldSelectAllAuthors() {
-        List<Author> authors = authorRepository.findAll(0,20);
+        List<Author> authors = authorRepository.findAll(0, 20);
         Assert.assertNotEquals(0, authors.size());
     }
 
@@ -81,7 +81,7 @@ public class AuthorRepositoryImplTest {
     @Test
     public void shouldDeleteAuthor() {
         authorRepository.delete(AUTHOR_ID);
-        List<Author> authors = authorRepository.findAll(0,20);
+        List<Author> authors = authorRepository.findAll(0, 20);
         Assert.assertEquals(19, authors.size());
     }
 

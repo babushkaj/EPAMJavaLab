@@ -1,8 +1,8 @@
 INSERT INTO users(name, surname, login, password)
 VALUES
-	('One', 'First', 'One', 'First'),
-	('Two', 'Second', 'Two', 'Second'),
-	('Three', 'Third', 'Three', 'Third');
+	('One', 'First', 'One', '$2a$10$pRxUtD2Tns8hMB8wW41pyu8ZXW9OAV2rELzTQf14hC98Q8FWJ.lV2'),
+	('Two', 'Second', 'Two', '$2a$10$TXN6.npWghVh7X2Ionn1S.l3/oiI6wzLMOZOw/v7IDLBlOgeLndre'),
+	('Three', 'Third', 'Three', '$2a$10$1clMPZnbSGsLCWMLckTbduQj4wcFFr3vsHwp/a1dhAiaukoezpNju');
    
 INSERT INTO news(title, short_text,	full_text, creation_date, modification_date)
 VALUES
@@ -72,4 +72,13 @@ VALUES
 	(6, 6),	(7, 7),	(8, 8),	(9, 9),	(10, 10), 
 	(11, 11), (12, 12),	(13, 13), (14, 14),	(15, 15), 
 	(16, 16), (17, 17), (18, 18), (19, 19), (20, 20);
+	
+INSERT INTO roles(id, role_name)
+VALUES
+	(1, 'USER'), (2, 'ADMIN');
+	
+INSERT INTO user_role(user_id, role_id)
+VALUES
+	(1, 1), (1, 2), (2, 2),	(3, 2);
+
 	

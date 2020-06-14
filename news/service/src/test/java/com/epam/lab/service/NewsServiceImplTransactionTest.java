@@ -80,12 +80,12 @@ public class NewsServiceImplTransactionTest {
     @Test
     public void shouldRollbackTransactionalAddNewsMethodWithoutChanges() {
         Mockito.when(tagRepository.findByName(Mockito.anyString())).thenThrow(RuntimeException.class);
-        long newsCountBeforeInsert = newsRepository.findAll(0,20).size();
+        long newsCountBeforeInsert = newsRepository.findAll(0, 20).size();
         try {
             newsService.addNews(newsDTO1);
         } catch (RuntimeException e) {
         }
-        long newsCountAfterInsert = newsRepository.findAll(0,20).size();
+        long newsCountAfterInsert = newsRepository.findAll(0, 20).size();
         Assert.assertEquals(newsCountBeforeInsert, newsCountAfterInsert);
     }
 }

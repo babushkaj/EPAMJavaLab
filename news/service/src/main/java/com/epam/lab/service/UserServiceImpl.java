@@ -4,6 +4,7 @@ import com.epam.lab.dto.UserDTO;
 import com.epam.lab.repository.UserRepository;
 import com.epam.lab.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +17,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final MapperUtil mapperUtil;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil) {
+    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil,
+                           BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.mapperUtil = mapperUtil;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -46,12 +50,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO addUser(UserDTO userDTO) {
+        userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         long userId = userRepository.insert(mapperUtil.convertUserDTOToUser(userDTO));
         return mapperUtil.convertUserToUserDTO(userRepository.findById(userId));
     }
 
-    @Override
-    public UserDTO selectUserByLogin(String login) {
-        return mapperUtil.convertUserToUserDTO(userRepository.findByLogin(login));
+    public Long count() {
+        return userRepository.countAll();
     }
+
 }

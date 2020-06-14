@@ -1,7 +1,6 @@
 package com.epam.lab.repository;
 
 import com.epam.lab.exception.UserNotFoundException;
-import com.epam.lab.model.Tag;
 import com.epam.lab.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         Root<User> userRoot = criteriaQuery.from(User.class);
         criteriaQuery.select(userRoot);
-        criteriaQuery.orderBy( criteriaBuilder.asc(userRoot.get("id")));
+        criteriaQuery.orderBy(criteriaBuilder.asc(userRoot.get("id")));
         TypedQuery<User> query = entityManager.createQuery(criteriaQuery);
         return query
                 .setFirstResult(from)

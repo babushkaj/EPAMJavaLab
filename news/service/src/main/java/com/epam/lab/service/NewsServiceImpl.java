@@ -135,8 +135,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public Long count(List<SearchCriteria> searchCriteria) {
-        if(searchCriteria.isEmpty())
-        return newsRepository.countAll();
+
+        if (searchCriteria.isEmpty())
+            return newsRepository.countAll();
         else {
             NewsSpecificationBuilder newsSpecificationBuilder = new NewsSpecificationBuilder();
             for (SearchCriteria sc : searchCriteria) {
